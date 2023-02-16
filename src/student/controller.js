@@ -34,9 +34,15 @@ const addStudent = (req, res) => {
 const deleteStudent = (req, res) => {
   const id = parseInt(req.params.id);
 
-  pool.query(queries.deleteStudent, [id], (err, results) => {
-    if (err) throw err;
-    res.status(200).send("delete student");
+  pool.query(queries.getStudentById, [id], (err, results) => {
+    const notStudentFound = !results.rows.length;
+    if (notStudentFound) {
+      res.send("Student does not exist in the database");
+    }
+    pool.query(queries.deleteStudent, [id], (err, results) => {
+      if (err) throw err;
+      res.status(200).send("Student removed successfully");
+    });
   });
 };
 
