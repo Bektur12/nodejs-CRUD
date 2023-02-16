@@ -31,8 +31,18 @@ const addStudent = (req, res) => {
   });
 };
 
+const deleteStudent = (req, res) => {
+  const id = parseInt(req.params.id);
+
+  pool.query(queries.deleteStudent, [id], (err, results) => {
+    if (err) throw err;
+    res.status(200).send("delete student");
+  });
+};
+
 module.exports = {
   getStudents,
   getStudentsById,
   addStudent,
+  deleteStudent,
 };
